@@ -111,60 +111,23 @@ function goLingo() {
 goLingo();
 
 var checkProbes = function() {
+$('.kv-bubble:contains("failure")').addClass("fail");
 
-  $('.kv-bubble:contains("failure")').addClass("fail");
-  $('.kv-bubble:contains("success")').addClass("succeed")
-  var pFails = [];
-  if ($('.kv-bubble.fail').parent().is(':contains("parsecStatus")')) {
-    pFails = $('.kv-bubble.fail').parent().find(".key-label").text().trim();
-  }
-  var wFails = [];
-  if ($('.kv-bubble.fail').parent().is(':contains("wolframAlphaQRStatus")')) {
-    wFails = $('.kv-bubble.fail').parent().find(".key-label").text().trim();
-  }
-  var psucs = [];
-  if ($('.kv-bubble.succeed').parent().is(':contains("parsecStatus")')) {
-    psucs = $('.kv-bubble.succeed').parent().find(".key-label").text().trim();
-  }
-  var wsucs = [];
-  if ($('.kv-bubble.succeed').parent().is(':contains("wolframAlphaQRStatus")')) {
-    wsucs = $('.kv-bubble.succeed').parent().find(".key-label").text().trim();
-  }
+$('.kv-bubble:contains("success")').addClass("succeed")
 
-  var fails = pFails.concat(wFails);
-  var succeeds = psucs.concat(wsucs);
+var fails = $('.kv-bubble.fail').parent().find(".key-label").text().replace(/(\r\n|\n|\r)/gm, "", " ").split("  ").filter(item => item);
 
-  probeArray = []
+var succs = $('.kv-bubble.succeed').parent().find(".key-label").text().replace(/(\r\n|\n|\r)/gm, "", " ").split("  ").filter(item => item);
 
-  $(".domain-verb").each(function() {
-    probe = $(this).text().replace(/(\r\n|\n|\r)/gm, "", " ").split("probe: ").pop().split('  ')[0];
-    if (fails.includes(probe)) {
-      console.log("found failed probe " + probe)
-      $(this).css("color", "red");
-    } else if (succeeds.includes(probe)) {
-      console.log("found successful probe " + probe)
-      $(this).css("color", "green");
-    }
-
-  });
-
-  $(".domain-verb:contains('answerFacts')").each(function() {
-    probe = $(this).text().replace(/(\r\n|\n|\r)/gm, "", " ").split("probe: ").pop().split('  ')[0];
-    if (wFails.includes(probe)) {
-      $(this).css("color", "red");
-    } else if (succeeds.includes(probe)) {
-      $(this).css("color", "green");
-    }
-  });
-  $(".domain-verb:contains('encyclopedia')").each(function() {
-    probe = $(this).text().replace(/(\r\n|\n|\r)/gm, "", " ").split("probe: ").pop().split('  ')[0];
-    if (pFails.includes(probe)) {
-      $(this).css("color", "red");
-    } else if (succeeds.includes(probe)) {
-      $(this).css("color", "green");
-    }
-
-  });
+$(".domain-verb").each(function() {
+  probe = $(this).text().replace(/(\r\n|\n|\r)/gm, "", " ").split("probe: ").pop().split('  ')[0];
+if (succs.includes(probe)) {
+    $(this).css("color", "green");
+  }  
+else if (fails.includes(probe)) {
+    $(this).css("color", "red");
+  } 
+});
 }
 checkProbes();
 
@@ -246,7 +209,7 @@ searchLinks();
         checkProbes();
         copyActual();
         ghost();
-				searchLinks();
+	searchLinks();
       }, 2000);
     }
     var pointer = this
