@@ -110,6 +110,13 @@ function goLingo() {
 }
 goLingo();
 
+function ghost() {
+  if ($('.ranked-list:contains("answerFacts")').length > 0) {
+    $('.rank-choice:contains("encyclopedia")').addClass('ency');
+  }
+}
+ghost();
+
 var checkProbes = function() {
 $('.kv-bubble:contains("failure")').addClass("fail");
 
